@@ -373,11 +373,15 @@ footer {
     border: 2px solid #ffcc80;
 }
 
-.audio-player audio {
-    width: 100%;
-    outline: none;
-    background: transparent;
-    border: none;
+.audio-player {
+    width: 200px; /* عرض ثابت بنفس المربع البرتقالي */
+    height: 60px; /* ارتفاع ثابت بنفس المربع البرتقالي */
+    background: linear-gradient(135deg, #009688, #004d40);
+    padding: 8px;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid #ffcc80;
+    margin-top: 10px;
 }
 
 /* نص القرآن في الشريط السفلي */
