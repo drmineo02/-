@@ -211,21 +211,15 @@ function showSection(sectionId) {
 
     const quranText = document.getElementById("quran-text");
     const footerNote = document.getElementById("footer-note");
-    const settingsBtn = document.querySelector(".settings-btn");
-    const settingsPanel = document.querySelector(".settings-panel");
     const sidebar = document.getElementById("sidebar");
     const mainContent = document.querySelector(".main-content");
 
     if (sectionId === "quran-section") {
         if (quranText) quranText.classList.add("active");
-        if (footerNote) footerNote.style.display = "block";
-        if (settingsBtn) settingsBtn.classList.remove("quran-active");
-        if (settingsPanel) settingsPanel.classList.remove("quran-active");
+        if (footerNote) footerNote.style.display = "none"; // إخفاء التذييل عند ظهور الشريط
     } else {
         if (quranText) quranText.classList.remove("active");
         if (footerNote) footerNote.style.display = "block";
-        if (settingsBtn) settingsBtn.classList.remove("quran-active");
-        if (settingsPanel) settingsPanel.classList.remove("quran-active");
     }
 
     // إغلاق القائمة على الجوالات بعد اختيار قسم
@@ -398,7 +392,7 @@ function highlightAyah(ayahNumber) {
     const activeAyah = document.getElementById(`ayah-${ayahNumber}`);
     if (activeAyah) {
         activeAyah.classList.add("active");
-        activeAyah.scrollIntoView({ behavior: "smooth", inline: "center" }); // تمرير أفقي
+        activeAyah.scrollIntoView({ behavior: "smooth", inline: "center" });
     } else {
         console.error("الآية المحددة غير موجودة:", ayahNumber);
     }
