@@ -391,10 +391,28 @@ function adjustFontSize(ayahElement) {
     const quranText = document.getElementById("quran-text");
     if (!quranText || !ayahElement) return;
 
-    const containerWidth = quranText.offsetWidth;
-    const containerHeight = quranText.offsetHeight;
-    let fontSize = 36; // الحجم الافتراضي الجديد
+    const containerWidth = 200; // عرض ثابت بنفس المشغل
+    const containerHeight = quranText.offsetHeight; // ارتفاع ديناميكي
+    let fontSize = 36; // الحجم الافتراضي الكبير
     ayahElement.style.fontSize = `${fontSize}px`;
+
+    // تقليل الحجم تدريجيًا حتى يتناسب النص مع العرض والارتفاع
+    while ((ayahElement.scrollWidth > containerWidth || ayahElement.scrollHeight > containerHeight) && fontSize > 12) {
+        fontSize -= 1;
+        ayahElement.style.fontSize = `${fontSize}px`;
+    }
+
+    // زيادة الحجم تدريجيًا إذا كان هناك مساحة إضافية
+    while ((ayahElement.scrollWidth < containerWidth * 0.9 && ayahElement.scrollHeight < containerHeight * 0.9) && fontSize < 60) {
+        fontSize += 1;
+        ayahElement.style.fontSize = `${fontSize}px`;
+        if (ayahElement.scrollWidth > containerWidth || ayahElement.scrollHeight > containerHeight) {
+            fontSize -= 1;
+            ayahElement.style.fontSize = `${fontSize}px`;
+            break;
+        }
+    }
+}
 
     // تقليل الحجم تدريجيًا حتى يتناسب النص مع العرض والارتفاع
     while ((ayahElement.scrollWidth > containerWidth || ayahElement.scrollHeight > containerHeight) && fontSize > 18) {
