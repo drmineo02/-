@@ -216,7 +216,7 @@ function showSection(sectionId) {
 
     if (sectionId === "quran-section") {
         if (quranText) quranText.classList.add("active");
-        if (footerNote) footerNote.style.display = "none"; // إخفاء التذييل عند ظهور الشريط
+        if (footerNote) footerNote.style.display = "block";
     } else {
         if (quranText) quranText.classList.remove("active");
         if (footerNote) footerNote.style.display = "block";
@@ -386,13 +386,40 @@ async function playAyah() {
     }
 }
 
-// تمييز الآية النشطة والانتقال إليها مباشرة
+// ضبط حجم الخط بناءً على طول النص وحجم الإطار
+function adjustFontSize(ayahElement) {
+    const quranText = document.getElementById("quran-text");
+    if (!quranText || !ayahElement) return;
+
+    const containerWidth = quranText.offsetWidth;
+    let fontSize = 18; // الحجم الافتراضي
+    ayahElement.style.fontSize = `${fontSize}px`;
+
+    // تقليل الحجم تدريجيًا حتى يتناسب النص مع العرض
+    while (ayahElement.scrollWidth > containerWidth && fontSize > 12) {
+        fontSize -= 1;
+        ayahElement.style.fontSize = `${fontSize}px`;
+    }
+
+    // زيادة الحجم تدريجيًا إذا كان هناك مساحة إضافية
+    while (ayahElement.scrollWidth < containerWidth * 0.9 && fontSize < 36) {
+        fontSize += 1;
+        ayahElement.style.fontSize = `${fontSize}px`;
+        if (ayahElement.scrollWidth > containerWidth) {
+            fontSize -= 1;
+            ayahElement.style.fontSize = `${fontSize}px`;
+            break;
+        }
+    }
+}
+
+// تمييز الآية النشطة وعرضها فقط
 function highlightAyah(ayahNumber) {
     document.querySelectorAll(".ayah").forEach(ayah => ayah.classList.remove("active"));
     const activeAyah = document.getElementById(`ayah-${ayahNumber}`);
     if (activeAyah) {
         activeAyah.classList.add("active");
-        activeAyah.scrollIntoView({ behavior: "smooth", inline: "center" });
+        adjustFontSize(activeAyah);
     } else {
         console.error("الآية المحددة غير موجودة:", ayahNumber);
     }
