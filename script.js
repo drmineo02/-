@@ -188,6 +188,7 @@ function toggleSidebar() {
     if (sidebar && mainContent) {
         sidebar.classList.toggle("active");
         mainContent.classList.toggle("shifted");
+        adjustQuranTextLayout(); // تحديث موقع quran-text عند تغيير القائمة
     } else {
         console.error("عنصر 'sidebar' أو 'main-content' غير موجود");
     }
@@ -217,6 +218,7 @@ function showSection(sectionId) {
     if (sectionId === "quran-section") {
         if (quranText) quranText.classList.add("active");
         if (footerNote) footerNote.style.display = "block";
+        adjustQuranTextLayout(); // تحديث موقع quran-text عند عرض القرآن
     } else {
         if (quranText) quranText.classList.remove("active");
         if (footerNote) footerNote.style.display = "block";
@@ -226,6 +228,35 @@ function showSection(sectionId) {
     if (window.innerWidth <= 768 && sidebar && mainContent) {
         sidebar.classList.remove("active");
         mainContent.classList.remove("shifted");
+    }
+}
+
+// دالة لضبط موقع وأبعاد quran-text ديناميكيًا
+function adjustQuranTextLayout() {
+    const quranText = document.getElementById("quran-text");
+    const audioPlayer = document.querySelector(".audio-player");
+    const sidebar = document.getElementById("sidebar");
+    const mainContent = document.querySelector(".main-content");
+
+    if (quranText && audioPlayer) {
+        const audioRect = audioPlayer.getBoundingClientRect();
+        const sidebarActive = sidebar && sidebar.classList.contains("active");
+        const sidebarWidth = sidebarActive ? 170 : 200; // عرض القائمة على الجوالات/الشاشات الكبيرة
+
+        quranText.style.width = `calc(100% - ${sidebarWidth + 20}px)`; // مراعاة القائمة والهامش
+        quranText.style.maxWidth = "600px";
+        quranText.style.minHeight = "100px";
+        quranText.style.height = `calc(100vh - ${audioRect.bottom + 20}px)`; // الارتفاع من أسفل المشغل إلى أسفل الشاشة
+        quranText.style.marginLeft = `${sidebarWidth}px`; // مراعاة القائمة
+        quranText.style.marginTop = "10px"; // مسافة بعد المشغل
+
+        // إعادة ضبط الحجم إذا كان quran-text نشطًا
+        if (quranText.classList.contains("active")) {
+            const activeAyah = quranText.querySelector(".ayah.active");
+            if (activeAyah) {
+                adjustFontSize(activeAyah);
+            }
+        }
     }
 }
 
@@ -297,6 +328,7 @@ async function loadAyahs() {
                 ayahDiv.innerText = `${ayah.text} (${index + 1})`;
                 quranText.appendChild(ayahDiv);
             });
+            adjustQuranTextLayout(); // تحديث التصميم بعد تحميل الآيات
         } else {
             console.error("عنصر 'quran-text' غير موجود");
         }
@@ -421,6 +453,7 @@ function highlightAyah(ayahNumber) {
     if (activeAyah) {
         activeAyah.classList.add("active");
         adjustFontSize(activeAyah);
+        adjustQuranTextLayout(); // تحديث التصميم عند تغيير الآية
     } else {
         console.error("الآية المحددة غير موجودة:", ayahNumber);
     }
@@ -443,6 +476,9 @@ function loadRandomPrayer() {
     }
 }
 
+// مراقبة تغيرات الشاشة
+window.addEventListener("resize", adjustQuranTextLayout);
+
 // تشغيل الأكواد عند تحميل الصفحة
 window.onload = () => {
     getRandomDua();
@@ -450,4 +486,5 @@ window.onload = () => {
     loadSurahs();
     loadAzkar();
     updateFavoritesList();
+    adjustQuranTextLayout(); // تهيئة التصميم عند التحميل
 };
