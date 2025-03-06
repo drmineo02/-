@@ -218,9 +218,9 @@ function showSection(sectionId) {
 
     if (sectionId === "quran-section") {
         if (quranText) quranText.classList.add("active");
-        if (footerNote) footerNote.style.display = "none";
-        if (settingsBtn) settingsBtn.classList.add("quran-active");
-        if (settingsPanel) settingsPanel.classList.add("quran-active");
+        if (footerNote) footerNote.style.display = "block";
+        if (settingsBtn) settingsBtn.classList.remove("quran-active");
+        if (settingsPanel) settingsPanel.classList.remove("quran-active");
     } else {
         if (quranText) quranText.classList.remove("active");
         if (footerNote) footerNote.style.display = "block";
@@ -398,7 +398,7 @@ function highlightAyah(ayahNumber) {
     const activeAyah = document.getElementById(`ayah-${ayahNumber}`);
     if (activeAyah) {
         activeAyah.classList.add("active");
-        activeAyah.scrollIntoView({ behavior: "smooth", block: "center" });
+        activeAyah.scrollIntoView({ behavior: "smooth", inline: "center" }); // تمرير أفقي
     } else {
         console.error("الآية المحددة غير موجودة:", ayahNumber);
     }
