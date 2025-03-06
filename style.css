@@ -386,20 +386,31 @@ footer {
 
 /* نص القرآن في الشريط السفلي */
 .quran-text {
-    width: 85%;
-    max-width: 450px;
-    min-height: 80px; /* زيادة الحد الأدنى للارتفاع لاستيعاب النصوص الأكبر */
-    height: calc(100vh - 260px);
+    width: 200px; /* نفس عرض المشغل */
+    min-height: 60px; /* الحد الأدنى للارتفاع بنفس المشغل */
+    max-height: 200px; /* الحد الأقصى للارتفاع لتجنب التجاوز */
     background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 10px;
-    overflow-y: auto;
+    overflow-y: auto; /* تمرير عمودي إذا كان النص طويلًا */
     direction: rtl;
-    font-size: 36px; /* زيادة الحجم الافتراضي إلى 36px */
+    font-size: 36px; /* الحجم الافتراضي الكبير */
     display: none;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    margin-top: 10px;
+    margin-top: 10px; /* للحفاظ على المسافة بعد المشغل */
+}
+
+.quran-text .ayah {
+    display: none;
+    width: 100%;
+    white-space: normal;
+}
+
+.quran-text .ayah.active {
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 .quran-text .ayah {
